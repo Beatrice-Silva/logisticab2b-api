@@ -4,10 +4,37 @@
  */
 package com.logistica.api.repository;
 
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.SQLException;
+
 /**
  *
  * @author BEATRICE
  */
 public class Conexao {
+        
+    private static final String url = "jdbc:mysql://localhost:3306/db_logisticab2b";
+    private static final String user = "root";
+    private static final String senha = "Charlie162023";
+
+    private static Connection conn = null;
+    
+    
+    public Conexao(){
+    }
+    
+    public static synchronized Connection conectar(){
+        try{
+            if(conn == null || conn.isClosed()){
+                conn = DriverManager.getConnection(url, user, senha);
+            }
+            
+        }catch(SQLException e){
+            e.printStackTrace();
+        }
+        return conn;
+        
+    }
     
 }

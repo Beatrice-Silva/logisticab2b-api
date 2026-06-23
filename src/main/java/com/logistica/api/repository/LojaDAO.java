@@ -3,51 +3,51 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
 package com.logistica.api.repository;
-import com.logistica.api.model.UsuarioDTO;
-import org.springframework.stereotype.Repository;
+
+import com.logistica.api.model.LojaDTO;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
-import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
-import org.springframework.stereotype.Repository;
+
 /**
  *
  * @author BEATRICE
  */
-
-@Repository
-public class UsuarioDAO {
-    public int salvarUsuario(UsuarioDTO usuario){
+public class LojaDAO {
+    
+    public int salvarLoja(LojaDTO loja){
     int linhas = 0;
     try{
         Connection conn = Conexao.conectar();
         PreparedStatement stmt = conn.prepareStatement(
-            "INSERT INTO usuarios(nome,email,senha,perfilrole) VALUES(?,?,?,?)");
-        stmt.setString(1, usuario.getNome());
-        stmt.setString(2, usuario.getEmail());
-        stmt.setString(3, usuario.getSenha());
-        stmt.setString(4, usuario.getPerfilrole());
+            "INSERT INTO lojas(nome_estabelecimento,cnpj,id_usuario,contato_email,cidade,endereco) VALUES(?,?,?,?,?,?)");
+        stmt.setString(1, loja.getNome_Estabelecimento());
+        stmt.setString(2, loja.getCnpj());
+        stmt.setLong(3, loja.getId_Usuario());
+        stmt.setString(4, loja.getEmail());
+        stmt.setString(5, loja.getCidade());
+        stmt.setString(6, loja.getEndereco());
         linhas = stmt.executeUpdate();
     }catch(SQLException e){ e.printStackTrace(); }
     return linhas;
 }
 
-public List<UsuarioDTO> listarUsuarios(){
-    List<UsuarioDTO> lista = new ArrayList();
+public List<LojaDTO> listarLojas(){
+    List<LojaDTO> lista = new ArrayList();
     try{
         Connection conn = Conexao.conectar();
         PreparedStatement stmt = conn.prepareStatement("SELECT * FROM usuarios");
         ResultSet rs = stmt.executeQuery();
         while(rs.next()){
-            UsuarioDTO usuario = new UsuarioDTO();
-            usuario.setId(rs.getLong("id"));
-            usuario.setNome(rs.getString("nome"));
-            usuario.setEmail(rs.getString("email"));
-            usuario.setSenha(rs.getString("senha"));
-            usuario.setPerfilrole(rs.getString("perfilrole"));
-            lista.add(usuario);
+            UsuarioDTO u = new UsuarioDTO();
+            u.setId(rs.getLong("id"));
+            u.setNome(rs.getString("nome"));
+            u.setEmail(rs.getString("email"));
+            u.setSenha(rs.getString("senha"));
+            u.setPerfilrole(rs.getString("perfilrole"));
+            lista.add(u);
         }
     }catch(SQLException e){ e.printStackTrace(); }
     return lista;
@@ -57,27 +57,30 @@ public int deletarUsuario(long id){
     int linhas = 0;
     try{
         Connection conn = Conexao.conectar();
-        PreparedStatement stmt = conn.prepareStatement("DELETE FROM usuarios WHERE id = ?");
+        PreparedStatement stmt = conn.prepareStatement("DELETE FROM lojas WHERE id = ?");
         stmt.setLong(1, id);
         linhas = stmt.executeUpdate();
     }catch(SQLException e){ e.printStackTrace(); }
     return linhas;
 }
 
-public int atualizarUsuario(UsuarioDTO usuario){
+public int atualizarUsuario(LojaDTO loja){
     int linhas = 0;
     try{
         Connection conn = Conexao.conectar();
         PreparedStatement stmt = conn.prepareStatement(
-            "UPDATE usuarios SET nome=?, email=?, senha=?, perfilrole=? WHERE id=?");
-        stmt.setString(1, usuario.getNome());
-        stmt.setString(2, usuario.getEmail());
-        stmt.setString(3, usuario.getSenha());
-        stmt.setString(4, usuario.getPerfilrole());
-        stmt.setLong(5, usuario.getId());
+            "UPDATE lojas SET=?, =?, =?, =? WHERE id=?");
+        
+        stmt.setString(1, loja.getNome_Estabelecimento());
+        stmt.setString(2, loja.getCnpj());
+        stmt.setLong(3, loja.getId_Usuario());
+        stmt.setString(4, loja.getEmail());
+        stmt.setString(5, loja.getCidade());
+        stmt.setString(6, loja.getEndereco());
+       
+        
         linhas = stmt.executeUpdate();
     }catch(SQLException e){ e.printStackTrace(); }
-    
     return linhas;
 }
 }
